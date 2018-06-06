@@ -3,6 +3,7 @@ package com.sample;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ms.ef.ExplosionField;
@@ -22,7 +23,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        final ExplosionField field = new ExplosionField(this);
+        final ExplosionField field = ExplosionField.getInstance(this);
         final TextView text = findViewById(R.id.text);
 
         text.setOnClickListener(new View.OnClickListener() {

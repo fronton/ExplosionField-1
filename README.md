@@ -27,6 +27,6 @@ compile project(':Library')
 
 #### Step 2
 ```xml
-ExplosionField explosionField = new ExplosionField(this);
+ExplosionField explosionField = ExplosionField.getInstance(this);
 explosionField.explode(view);
 ```

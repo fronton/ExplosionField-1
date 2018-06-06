@@ -29,25 +29,29 @@ import java.util.Random;
 public class ExplosionField extends View {
 
     private List<ExplosionAnimator> mExplosions = new ArrayList<>();
-    private int[] mExpandInset = new int[2];
+    private static int[] mExpandInset = new int[2];
 
-    public ExplosionField(Context context) {
-        super(context);
-        init();
+    private ExplosionField(Context context) {
+        this(context, null);
     }
 
-    public ExplosionField(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        init();
+    private ExplosionField(Context context, AttributeSet attrs) {
+        this(context, attrs, 0);
     }
 
-    public ExplosionField(Context context, AttributeSet attrs, int defStyleAttr) {
+    private ExplosionField(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init();
+
     }
 
-    private void init() {
+    public static ExplosionField getInstance(Activity activity) {
         Arrays.fill(mExpandInset, Utils.dp2Px(32));
+
+        ViewGroup rootView = activity.findViewById(Window.ID_ANDROID_CONTENT);
+        ExplosionField field = new ExplosionField(activity);
+        rootView.addView(field, new ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        return field;
     }
 
     @Override
@@ -61,32 +65,6 @@ public class ExplosionField extends View {
     public void expandExplosionBound(int dx, int dy) {
         mExpandInset[0] = dx;
         mExpandInset[1] = dy;
-    }
-
-    public interface OnFinishListener {
-
-        void onExplosionFinish();
-    }
-
-    private OnFinishListener listener;
-
-    public ExplosionField setOnAnimFinishListener(OnFinishListener listener) {
-        this.listener = listener;
-        return this;
-    }
-
-    public void explode(Bitmap bitmap, Rect bound, long startDelay, long duration) {
-        final ExplosionAnimator explosion = new ExplosionAnimator(this, bitmap, bound);
-        explosion.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                mExplosions.remove(animation);
-            }
-        });
-        explosion.setStartDelay(startDelay);
-        explosion.setDuration(duration);
-        mExplosions.add(explosion);
-        explosion.start();
     }
 
     public void explode(final View view) {
@@ -122,16 +100,34 @@ public class ExplosionField extends View {
         explode(Utils.createBitmapFromView(view), r, startDelay, ExplosionAnimator.DEFAULT_DURATION);
     }
 
+    public void explode(Bitmap bitmap, Rect bound, long startDelay, long duration) {
+        final ExplosionAnimator explosion = new ExplosionAnimator(this, bitmap, bound);
+        explosion.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                mExplosions.remove(animation);
+            }
+        });
+        explosion.setStartDelay(startDelay);
+        explosion.setDuration(duration);
+        mExplosions.add(explosion);
+        explosion.start();
+    }
+
+    public interface OnFinishListener {
+
+        void onExplosionFinish();
+    }
+
+    private OnFinishListener listener;
+
+    public ExplosionField setOnAnimFinishListener(OnFinishListener listener) {
+        this.listener = listener;
+        return this;
+    }
+
     public void clear() {
         mExplosions.clear();
         invalidate();
-    }
-
-    public static ExplosionField attach2Window(Activity activity) {
-        ViewGroup rootView = (ViewGroup) activity.findViewById(Window.ID_ANDROID_CONTENT);
-        ExplosionField explosionField = new ExplosionField(activity);
-        rootView.addView(explosionField, new ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        return explosionField;
     }
 }
