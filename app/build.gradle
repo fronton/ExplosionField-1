@@ -1,0 +1,46 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion Integer.parseInt(project.CompileSdkVersion)
+    buildToolsVersion project.BuildToolsVersion
+
+    defaultConfig {
+        applicationId "com.sample"
+        minSdkVersion Integer.parseInt(project.MinSdkVersion)
+        targetSdkVersion Integer.parseInt(project.TargetSdkVersion)
+        versionCode Integer.parseInt(project.VersionCode)
+        versionName project.VersionName
+    }
+
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
+    }
+
+    buildTypes {
+        debug {
+            debuggable true
+            // 混淆
+            minifyEnabled false
+            // Zipalign优化
+            zipAlignEnabled true
+        }
+        release {
+            debuggable false
+            // 混淆
+            minifyEnabled true
+            // Zipalign优化
+            zipAlignEnabled true
+            // 移除无用的resource文件
+            shrinkResources true
+            proguardFiles 'proguard-rules.pro'
+        }
+    }
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.android.support:design:25.3.1' // 预览xml文件效果
+    implementation project(":Library")
+}
