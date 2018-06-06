@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.ms.ef.ExplosionField;
 
@@ -18,25 +17,25 @@ import com.ms.ef.ExplosionField;
  */
 public class MainActivity extends Activity {
 
-    private ExplosionField mField;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mField = new ExplosionField(this);
-        mField.setOnAnimFinishListener(new ExplosionField.OnFinishListener() {
-            @Override
-            public void onExplosionFinish() {
-                Toast.makeText(MainActivity.this, "123", Toast.LENGTH_SHORT).show();
-            }
-        });
+        final ExplosionField field = new ExplosionField(this);
         final TextView text = findViewById(R.id.text);
+
         text.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mField.explode(text);
+                field.explode(text);
+            }
+        });
+
+        field.setOnAnimFinishListener(new ExplosionField.OnFinishListener() {
+            @Override
+            public void onExplosionFinish() {
+
             }
         });
     }
