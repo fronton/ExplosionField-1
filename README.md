@@ -17,7 +17,7 @@
 Gradle
 ```groovy
 dependencies{
-    compile com.github.wenchaosong:ExplosionField:1.0.0'
+    compile 'com.github.wenchaosong:ExplosionField:1.0.0'
 }
 ```
 或者引用本地lib
