@@ -1,7 +1,7 @@
 # 碎片动画
 
 [![](https://jitpack.io/v/wenchaosong/ExplosionField.svg)](https://jitpack.io/#wenchaosong/ExplosionField)
-[![Hex.pm](https://img.shields.io/github/stars/wenchaosong/ExplosionField.svg)](https://github.com/wenchaosong/ExplosionField)
+[![](https://img.shields.io/github/stars/wenchaosong/ExplosionField.svg)](https://github.com/wenchaosong/ExplosionField)
 
 在原项目[ExplosionField](https://github.com/tyrantgit/ExplosionField) 基础上
 增加了动画结束的监听
